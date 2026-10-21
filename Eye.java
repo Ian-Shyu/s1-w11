@@ -111,7 +111,9 @@ public class Eye {
         return ( (slope * (pupX - eyeCenterX)) + eyeCenterY );
     }
     
-    
+    public void laser(Graphics g, int mx, int my){
+        g.drawLine(pupilX, pupilY, mx, my);
+    }
     
 
 

@@ -9,7 +9,7 @@ import java.awt.event.*;
  * of this class.
  */
 
-public class XEyes extends JPanel implements MouseListener{
+public class XEyes extends JPanel implements MouseListener, MouseMotionListener{
 
 
     private String fileName = "einstein.jpg";
@@ -20,6 +20,9 @@ public class XEyes extends JPanel implements MouseListener{
     // Each eye gets an instance variable.
     private Eye eye_1;
     private Eye eye_2;
+
+    public int clickedX;
+    public int clickedY;
     
 
     // Constructor: this loads the image "einstein.jpg" in the "images" directory 
@@ -34,7 +37,9 @@ public class XEyes extends JPanel implements MouseListener{
         // these eyes fit right on Einstein's head.  
         eye_1 = new Eye(269, 290, 49, 37);
         eye_2 = new Eye(372, 290, 49, 37);
+
         addMouseListener(this);
+        addMouseMotionListener(this);
         myFrame.setVisible(true);
         }
 
@@ -50,10 +55,15 @@ public class XEyes extends JPanel implements MouseListener{
            
           
     public void paintComponent(Graphics g) {
-  
+        
         g.drawImage(myPic.getImage(), 0, 0, this);
+        
         eye_1.draw(g);
         eye_2.draw(g);
+
+        g.setColor(Color.red);
+        eye_1.laser(g, this.clickedX, this.clickedY);
+        eye_2.laser(g, this.clickedX, this.clickedY);
     }
     
     // move the pupil when the mouse is clicked
@@ -62,12 +72,33 @@ public class XEyes extends JPanel implements MouseListener{
         eye_2.movePupil(event.getX(), event.getY());
         
         repaint();
+
+        this.clickedX = event.getX();
+        this.clickedY = event.getY();
     }
-  
+
     public void mouseReleased (MouseEvent event) {
     }
     
+    public void mouseMoved (MouseEvent event){
+        eye_1.movePupil(event.getX(), event.getY());
+        eye_2.movePupil(event.getX(), event.getY());
+        
+        this.clickedX = event.getX();
+        this.clickedY = event.getY();
+
+        repaint();
+    }
+
+    public void mouseDragged (MouseEvent event){
+        eye_1.movePupil(event.getX(), event.getY());
+        eye_2.movePupil(event.getX(), event.getY());
+        
+        repaint();
+    }
+
     public void mousePressed (MouseEvent event) {
+        
     }
     
     public void mouseEntered (MouseEvent event) {
